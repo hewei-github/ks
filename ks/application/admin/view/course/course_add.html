@@ -1,0 +1,48 @@
+{include file='public/header' /}
+<body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                  <div class="layui-form-item">
+                      <label for="course_name" class="layui-form-label">
+                          <span class="x-red">*</span>课程名称
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="course_name" name="course_name" required=""
+                          autocomplete="off" class="layui-input">
+                      </div>
+                        <button  class="layui-btn" lay-filter="sa" lay-submit="" id="submit">
+                            保存
+                        </button>
+                  </div>
+
+                <input type="hidden" name="admin_id" value="{$Think.session.user_info.admin_id}">
+                    
+              </form>
+            </div>
+        </div>
+        <script>
+        $("#submit").on("click", function(event){
+            $.ajax({
+        type: "POST",
+        url: "{:url('course/add')}",
+        data: $(".layui-form").serialize(),
+        dataType: "json",
+        success: function(data){
+            if (data.status == 1) {
+            alert(data.message);
+            parent.layer.closeAll();
+            window.location.reload();
+          } else {
+            alert(data.message);
+            window.location.href = "{:url('course/course_add')}";
+          }
+        }
+      });
+
+    })
+          </script>
+    </body>
+
+</html>
+

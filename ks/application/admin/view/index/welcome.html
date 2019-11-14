@@ -1,0 +1,47 @@
+{include file='public/header' /}
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body ">
+                            <blockquote class="layui-elem-quote">欢迎管理员：
+                                <span class="x-red">{$Think.session.user_info.admin_name}</span>！
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">系统信息</div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table">
+                                <tbody>
+                                    <tr>
+                                        <th>计算机名</th>
+                                        <td>{$Request.host}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>访问域名</th>
+                                        <td>{$Request.domain}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>本次登录IP</th>
+                                        <td>{$Request.ip}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>本次登录时间</th>
+                                        <td>{:date("Y-m-d H:i:s", $Think.session.user_info.admin_last_time)}</td>
+                                    </tr>
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <style id="welcome_style"></style>
+            </div>
+        </div>
+        </div>
+    </body>
+</html>

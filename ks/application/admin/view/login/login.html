@@ -1,0 +1,54 @@
+{include file='public/login_base' /}
+<body class="login-bg">
+  <div id="particles-js">
+    <div class="login layui-anim layui-anim-up" sy>
+        <div class="message">在线考试系统管理登录</div>
+        <div id="darkbannerwrap"></div>
+        <form method="post" class="layui-form" >
+            <input name="adminName" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
+            <hr class="hr15">
+            <input name="adminPassword" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
+            <hr class="hr15">
+            <input name="verification" lay-verify="required" placeholder="验证码"  type="text" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="" style="width:150px;">
+            <div class="cap"><img src="{:captcha_src()}" id="captcha_img"></div>
+            <div class="cap"><a id="kanbuq" href="javascript:captcha_refresh();" style="color:blue">看不清，换一张</a></div>
+            <hr class="hr15">
+            <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="button" id="loginBtn">
+            <hr class="hr20" >
+            <div><a href="{:url('register/index')}" style="color:blue">没有账号？去注册</a></div>
+
+        </form></div>
+  </div>
+    <script>
+      $(function(){
+        $('#loginBtn').on('click',function() {
+          $.ajax({
+            url: "{:url('login/checkLogin')}",
+            type: 'POST',
+            data:$(".layui-form").serialize(),
+             dataType: "json",
+             success: function(data){
+               if (data.status == 1) 
+               {
+                alert(data.message);
+                window.location.href = "{:url('index/index')}";
+                } 
+                else 
+                {
+                  alert(data.message);
+                  window.location.href = "{:url('login/index')}";
+              }
+            }
+          })      
+        });
+      })
+      //刷新验证码
+      function captcha_refresh(){
+        var str = Date.parse(new Date())/1000;
+        $('#captcha_img').attr("src", "/captcha?id="+str);
+    }
+
+    </script>
+    <script src="__STATIC__/login/js/canvas-nest.js" type="text/javascript" color="0,0,255" opacity="0.8" count="250"></script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+{include file='public/header' /}
+<body>
+        <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                  <div class="layui-form-item">
+                      <label for="course_id" class="layui-form-label">
+                          <span class="x-red">*</span>课程ID
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="course_id" name="course_id" required="" lay-verify="required"value="{$courselist.course_id}"
+                          autocomplete="off" class="layui-input" disabled>
+                      </div>
+
+                      <div class="layui-form-mid layui-word-aux">
+                          <span class="x-red">*</span>课程ID不能修改（唯一课程ID）
+                      </div>
+                  </div>
+                  <div class="layui-form-item">
+                      <label for="course_name" class="layui-form-label">
+                          <span class="x-red">*</span>课程名称
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="text" id="course_name" name="course_name" required=""value="{$courselist.course_name}"
+                          autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-form-mid layui-word-aux">
+                          <span class="x-red">*</span>
+                      </div>
+                  </div>
+
+
+                  <div class="layui-form-item">
+                      <label for="L_pass" class="layui-form-label">
+                          <span class="x-red">*</span>新密码
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="password" id="L_pass" name="pass" required="" lay-verify="pass"
+                          autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-form-mid layui-word-aux">
+                          6到16个字符
+                      </div>
+                  </div>
+
+                  <div class="layui-form-item">
+                      <label for="L_repass" class="layui-form-label">
+                          <span class="x-red">*</span>确认密码
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
+                          autocomplete="off" class="layui-input">
+                      </div>
+                  </div>
+
+                <input type="hidden" name="admin_id" value="{$Think.session.user_info.admin_id}">
+                <input type="hidden" name="is_update" value="{$Think.session.user_info.admin_is_update}">
+
+
+                    <div class="layui-form-item">
+                        <label for="L_repass" class="layui-form-label">
+                        </label>
+                        <button  class="layui-btn" lay-filter="sa" lay-submit="">
+                            保存
+                        </button>
+                    </div>
+
+              </form>
+            </div>
+        </div>
+        <script>
+          layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form,
+                    layer = layui.layer;
+
+                //自定义验证规则
+                form.verify({
+                    email:[/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/, "邮箱格式不正确"],
+                    pass:[/(.+){6,12}$/, '密码必须6到12位'],
+                    repass:function(value) {
+                        if ($('#L_pass').val() != $('#L_repass').val()) {
+                            return '两次密码不一致';
+                        }
+                    }
+                });
+
+                //监听提交
+                form.on('submit(sa)',function(data) {
+                    console.log(data);
+                    //发异步，把数据提交给php
+                    $.ajax({
+                        type: 'POST',
+                        url: "{:url('admin/update')}",
+                        data: $(".layui-form").serialize(),
+                        dataType: "json",
+                        success: function(data){
+                            console.log(data);
+                            if (data.status == 1) {
+                                alert(data.message);
+                                window.location.href = "{:url('admin/index')}";
+                                window.parent.location.reload();
+                            } else {
+                                alert(data.message);
+                                window.location.href = "{:url('admin/update')}";
+                            }
+                        }
+                    })
+
+                    return false;
+                });
+
+            });
+          </script>
+    </body>
+
+</html>
+

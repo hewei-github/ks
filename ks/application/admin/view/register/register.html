@@ -1,0 +1,67 @@
+{include file='public/login_base' /}
+<body class="login-bg">
+  <div id="particles-js">
+    <div class="login layui-anim layui-anim-up" sy>
+        <div class="message">在线考试系统管理注册</div>
+        <div id="darkbannerwrap"></div>
+        <form method="post" class="layui-form" >
+            <input name="adminName" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
+            <span class="x-red">*用户名不能修改（唯一登录名）</span>
+            <hr class="hr15">
+            <input name="adminEmail" placeholder="邮箱"  type="text" lay-verify="email" class="layui-input" >
+            <hr class="hr15">
+            <input name="password" lay-verify="pass" placeholder="密码"  type="password" id="L_pass"class="layui-input">
+            <hr class="hr15">
+            <input name="adminPassword" lay-verify="repass" placeholder="确认密码"  type="password" class="layui-input"id="L_repass">
+            <hr class="hr15">
+            <input value="注册" lay-submit lay-filter="reg" style="width:100%;" type="button" id="regBtn">
+            <hr class="hr20" >
+        </form></div>
+  </div>
+    <script>
+    layui.use(['form', 'layer'],
+            function() {
+                $ = layui.jquery;
+                var form = layui.form,
+                    layer = layui.layer;
+
+                //自定义验证规则
+                form.verify({
+                    email:[/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/, "邮箱格式不正确"],
+                    pass:[/(.+){6,16}$/, '密码必须6到16位'],
+                    repass:function(value) {
+                        if ($('#L_pass').val() != $('#L_repass').val()) {
+                            return '两次密码不一致';
+                        }
+                    }
+                });
+
+                //监听提交
+                form.on('submit(reg)',function(data) {
+                    console.log(data);
+                    //发异步，把数据提交给php
+                    $.ajax({
+                        type: 'POST',
+                        url: "{:url('register/register')}",
+                        data: $(".layui-form").serialize(),
+                        dataType: "json",
+                        success: function(data){
+                            console.log(data);
+                            if (data.status == 1) {
+                                alert(data.message);
+                                window.location.href = "{:url('login/index')}";
+                            } else {
+                                alert(data.message);
+                                window.location.href = "{:url('register/index')}";
+                            }
+                        }
+                    })
+
+                    return false;
+                });
+
+            });
+    </script>
+    <script src="__STATIC__/login/js/canvas-nest.js" type="text/javascript" color="0,0,255" opacity="0.8" count="250"></script>
+</body>
+</html>
