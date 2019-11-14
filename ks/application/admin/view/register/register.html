@@ -45,13 +45,12 @@
                         url: "{:url('register/register')}",
                         data: $(".layui-form").serialize(),
                         dataType: "json",
-                        success: function(data){
-                            console.log(data);
-                            if (data.status == 1) {
-                                alert(data.message);
+                        success: function(res){
+                            if (res.status == 1) {
+                                alert(res.message);
                                 window.location.href = "{:url('login/index')}";
                             } else {
-                                alert(data.message);
+                                alert(res.message);
                                 window.location.href = "{:url('register/index')}";
                             }
                         }

@@ -27,15 +27,15 @@
             type: 'POST',
             data:$(".layui-form").serialize(),
              dataType: "json",
-             success: function(data){
-               if (data.status == 1) 
+             success: function(res){
+               if (res.status == 1) 
                {
-                alert(data.message);
+                alert(res.message);
                 window.location.href = "{:url('index/index')}";
                 } 
                 else 
                 {
-                  alert(data.message);
+                  alert(res.message);
                   window.location.href = "{:url('login/index')}";
               }
             }

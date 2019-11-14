@@ -23,18 +23,22 @@
         </div>
         <script>
         $("#submit").on("click", function(event){
-            $.ajax({
-        type: "POST",
-        url: "{:url('course/add')}",
-        data: $(".layui-form").serialize(),
-        dataType: "json",
-        success: function(data){
-            if (data.status == 1) {
-            alert(data.message);
-            parent.layer.closeAll();
-            window.location.reload();
+        $.ajax({
+        type:"POST",
+        url:"{:url('course/add')}",
+        data:$(".layui-form").serialize(),
+        dataType:"json",
+        success: function(res){
+          console.log(res);
+            if (res.status==1){
+            alert(res.message);
+            window.layer.closeAll();
+            window.parent.location.reload();
+            //location.reload();
+            //window.opener.progressWindow.close();
+
           } else {
-            alert(data.message);
+            alert(res.message);
             window.location.href = "{:url('course/course_add')}";
           }
         }

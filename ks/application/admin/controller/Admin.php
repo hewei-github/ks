@@ -27,15 +27,15 @@ class Admin extends Base
         {//获取提交的数据,自动过滤一下空值
             $data=$request->param();
             $rule = [
-                    'admin_email|邮箱' =>'email|require',
-                    'rep|密码'=>'require|max:16|min:6',
+                    'adminEmail|邮箱' =>'email|require',
+                    'adminPassword|密码'=>'require|max:16|min:6',
                     ];
             $validate = new Validate($rule);
             $result=$validate->check($data);
             if($result===true){
             $admin = AdminModel::get(['admin_id'=>$data['admin_id']]);
-            $admin->admin_email = $data['admin_email'];
-            $admin['admin_password']=md5($data['rep']);
+            $admin->admin_email = $data['adminEmail'];
+            $admin['admin_password']=md5($data['adminPassword']);
             $res = $admin->save();
             $admin->save(['admin_update_time'=> time()]);
                 if (!is_null($res)) {

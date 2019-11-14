@@ -20,24 +20,29 @@ class Course extends Base
     {
         return $this->view->fetch('course_add');
     }
+
     public function add(Request $request)
     {
         $admin_id=Session::get('user_info.admin_id');
         $data=$request->param();
         $course_name=$data['course_name'];
-        $course= new CourseModel;
+        $status=0;
+        $message='添加失败';
+        $course=new CourseModel;
         $course->admin_id=$admin_id;
-        $course->save(['course_create_time'=> time()]);
-        $course->course_name=$data['course_name'];
-        $result=$course->save();
+        $course->course_name=$course_name;
+        $course->course_create_time=time();
+        if($course_name!=null&&$course_name!=''){
+        $res=$course->save();
         //设置返回数据
-        if (!is_null($result)) {
+        if (!is_null($res)) {
             $status=1;
             $message='添加成功';
         } else {
             $status = 0;
             $message = '添加失败';
         }
+    }
         return ['status'=>$status, 'message'=>$message];
     }
     public function del($course_id)
@@ -49,8 +54,14 @@ class Course extends Base
         } 
         else 
         {
-                    $status = 0;
+            $status = 0;
         }
         return ['status'=>$status, 'message'=>$message];
+    }
+    public function course_hs()
+    {
+      $res=CourseModel::onlyTrashed()->paginate(5);
+      $this->view->assign('coursehs', $res);
+      return $this->view->fetch('course_hs');
     }
 }

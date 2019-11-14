@@ -3,6 +3,7 @@ namespace app\admin\controller;
 use think\Request;
 use app\admin\common\Base;
 use app\admin\model\Admin as AdminModel;
+use think\validate;
 class Register extends Base
 {
     //渲染登录界面
@@ -13,9 +14,11 @@ class Register extends Base
 
     public function register(Request $request)
     {
+      $status=0;
+      $message='注册失败';
       $data=$request->param();
       $rule = [
-                'adminName|用户名' =>'email|require',
+                'adminName|用户名' =>'max:11|require',
                 'password|密码' =>'require|max:16|min:6',
                 'adminPassword|确认密码' =>'require|max:16|min:6',  
                 'adminEmail|邮箱' =>'email|require',
@@ -37,25 +40,22 @@ class Register extends Base
        $res=$admin->save();
                 if (!is_null($res)) {
                     $status=1;
-                    $result='注册成功！返回登录界面！';
+                    $message='注册成功！返回登录界面！';
                 } else {
                     $status = 0;
-                    $message = '注册失败';
+                    $message='注册失败';
                 }
       }
       else
       {
         $status=0;
         $result='该用户名已被使用，请重新起名';
-      }
+      }  
       }
       else
       {
         $message=$validate->getError();
       }
-      return ['status'=>$status,'message'=>$result];
+      return json(['status'=>$status,'message'=>$message]);
     }
-    }
-
-
 }

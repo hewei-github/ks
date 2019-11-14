@@ -1,0 +1,33 @@
+{include file='public/header' /}
+<link rel="stylesheet" href="__STATIC__/css/xadmin.css">
+    <body>
+      <div class="layui-card">
+      <div class="layui-card-body layui-table-body layui-table-main">
+       <table class="layui-table layui-form">
+        <thead>
+          <tr>
+            <th>课程ID</th>
+            <th>课程名称</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+           {volist name='coursehs' id='vo' empty="暂时没有数据"} 
+          <tr>
+            <td>{$vo.course_id}</td>
+            <td>{$vo.course_name}</td>
+            <td class="td-manage">
+              <a title="恢复" onclick="cate_del(this,'{$vo.course_id}')" href="javascript:;">
+                <i class="layui-icon">&#xe605;恢复</i>
+              </a>
+              <a title="永久删除" onclick="cate_del(this,'{$vo.course_id}')" href="javascript:;">
+                <i class="layui-icon">&#xe640;永久删除</i>
+              </a>
+            </td>
+          </tr> 
+          {/volist}
+          </tbody>                        
+          </table>
+        </div>
+        </div>
+     </body>
